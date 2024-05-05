@@ -144,6 +144,29 @@ int main() {
                         }
                     }
                 }else {
+                    if(name != "" || output != ""){
+                        cout << "Found local config!" << endl;
+                        cout << "juse it?: |[Y|N]| ";
+                        cin >> input;
+                        if(input == "y" || input == "Y"){
+                            compile_command = compiler + "  " + name + " -o " + output + " " + extras;
+                            cout << compile_command << endl;
+                            if(compile_command[0] == 'g' || compile_command[0] == 'G') {
+                                system(compile_command.c_str());
+                            } else {
+                                cout << "Invalid compiler specified!" << endl;
+                                cout << "Please use 'g++' or 'gcc'." << endl;
+                            }
+                        }else{
+                            if(command[0] == 'g' || command[0] == 'G'){
+                            	system(command.c_str());
+                            }else{
+                                cout << "Invalid compiler specified!" << endl;
+                                cout << "Please use 'g++' or 'gcc'." << endl;
+                            }
+                        }
+
+                    }
                     if(command[0] == 'g' || command[0] == 'G'){
                         system(command.c_str());
                     }else{
