@@ -37,28 +37,15 @@ void display_help(){
 void read_config(vector<string>& command_list, bool& start_after_compile) {
     ifstream config("commands.sh");
     string command;
-    string load1, load2, load3;
-    config >> load1 >> load2 >> load3;
-    if(load1 == "start"){
-        if(load3 == "true"){
-            start_after_compile = true;
-        }else{
-            start_after_compile = false;
-        }
-    }
     if(!config){
         cout << "Error no config file found!" << endl;
         cout << "Fallback to alternative config! " << endl;
         command_list.push_back("nothing");
     }
     while (getline(config, command)) {
-        if(command == "test2.exe"){
-            cout << "ok" << endl;
-        }else{
-            if(command != ""){
-                cout << command << endl;
-                command_list.push_back(command);
-            }
+        if(command != ""){
+            cout << command << endl;
+            command_list.push_back(command);
         }
     }
     config.close(); 
@@ -220,6 +207,14 @@ int main() {
     }
     return 0;
 }
+
+
+//enable later
+/*cout << "Current build commands: " << endl;
+    for (const auto& command : command_list) {
+        cout << command << endl;
+    }
+*/
 
 /*else if(input == "out"){
             cout << "Enter output name: ";
