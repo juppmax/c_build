@@ -1,6 +1,7 @@
 # c_build
 c_build is a lightweight utility with insperation from make and fdisk.
-You place the .exe in your project and just run ./build.exe .
+You just build it with:
+'g++ -o build.exe build.cpp'
 It has the following commands:
 
 exit <=> exit               
