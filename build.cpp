@@ -19,20 +19,20 @@ void display_help(){
     clear();
     cout << R"(
             ###############################
-            # exit <=> exit               #
-            # help <=> help               #
-            # shpkg <=> show config       #
-            # makepkg <=> build app       #
-            # clear <=> clear display     #
-            # name <=> enter file         #
-            # out <=> enter output        #
-            # extra <=> add extras        #
-            # compile <=> use gcc/g++     #
-            # save <=> save local config  #
-            # start <=> start program     #
-            #                             #
-            ###############################
-            )" << endl;
+            # exit <=> exit                                   #
+            # help <=> help                                 #
+            # shpkg <=> show config                  #
+            # makepkg <=> build app                 #
+            # clear <=> clear display                   #
+            # name <=> enter file                       #
+            # out <=> enter output                    #
+            # extra <=> add extras                     #
+            # compile <=> use gcc/g++              #
+            # save <=> save local config            #
+            # start <=> start program                #
+            #                                                       #
+            ##############################
+            )" << endl;k
 }
 void read_config(vector<string>& command_list, bool& start_after_compile) {
     ifstream config("commands.sh");
@@ -193,6 +193,14 @@ int main() {
         }else if(input == "compile"){
             cout << "g++ or gcc: ";
             cin >> compiler;
+	if(compiler == “g++” || compiler == “gcc”){
+		cout << “set compiler successfull!” << endl;
+	}else {
+		cout << “Error! ” << endl;
+		cout << “Pleas enter a valid compiler! ” << endl;
+		cout << “Fallback to g++!” << endl;
+		compiler = “g++”;
+	}
             cin.ignore();
         }else if(input == "save"){
             if(name != "" && output != ""){
