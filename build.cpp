@@ -66,7 +66,7 @@ void run_compile_command(string& compile_command){
         cout << "Please use 'g++' or 'gcc'." << endl;
     }
 }
-void run_command(auto& command){
+void run_command(const string& command){
     if(command[0] == 'g' || command[0] == 'G'){
         system(command.c_str());
     }else{
@@ -95,7 +95,7 @@ int main() {
     //read build commands in vector
     read_config(command_list, start_after_compile);
     //check if config uses g++ or gcc
-    for (const auto& command : command_list) {
+    for (const string& command : command_list) {
         if (command != "nothing"){
             if(command[3] == 'c'){
                 compiler = "gcc";
@@ -127,7 +127,7 @@ int main() {
         }else if(input == "clear"){
             clear();
         }else if(input == "shpkg"){
-            for (const auto& command : command_list) {
+            for (const string& command : command_list) {
                 if(command == "nothing"){
                     cout << "Error!" << endl;
                     cout << "No compile command or config found!" << endl;
@@ -145,7 +145,7 @@ int main() {
             }
             cin.ignore();   
         }else if(input == "makepkg"){
-            for (const auto& command : command_list) {
+            for (const string& command : command_list) {
                 if(command == "nothing"){
                     cout << "Error!" << endl;
                     cout << "No compile command or config found!" << endl;
@@ -221,7 +221,7 @@ int main() {
                 cin.ignore();
             }
         }else if(input == "d"){
-            for (const auto& command : command_list) {
+            for (const string& command : command_list) {
                 cout << command << endl;
             }
         }else if(input == "start"){
@@ -243,7 +243,7 @@ int main() {
 
 //enable later
 /*cout << "Current build commands: " << endl;
-    for (const auto& command : command_list) {
+    for (const string& command : command_list) {
         cout << command << endl;
     }
 */
