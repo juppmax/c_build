@@ -76,10 +76,8 @@ void run_command(const string& command){
 }
 int main() {
     vector<string> command_list;
-    bool __runtime__ = false;
-    int __runtime__error; 
     string input;
-    string __version__ = "0.00.01";
+    string __version__ = "0.00.04";
 
     string name;
     string output;
@@ -88,8 +86,8 @@ int main() {
     string compile_command;
     string start_command;
     bool start_after_compile = false;
-    //start __runtime__
-    __runtime__ = true;
+
+    //clean display to start
     clear();
     cout << "app build: " << __version__ << endl;
     //read build commands in vector
@@ -108,20 +106,13 @@ int main() {
 
     //start shell
     cout << "type --help for help" << endl;
-    while(__runtime__){
-        //check if __runtime__ still exists
-        if(__runtime__ == false){
-            if(__runtime__error == 0){
-                exit(0);
-            }
-        }
+    while(true){
         //print tty environment
         cout << "|>: ";
         getline(cin, input);
         
         if(input == "exit"){
-            __runtime__ = false;
-            __runtime__error = 0;
+            exit(0);
         }else if(input == "--help"){
             display_help();
         }else if(input == "clear"){
@@ -237,16 +228,8 @@ int main() {
                     #endif
         }
     }
-    return 0;
 }
 
-
-//enable later
-/*cout << "Current build commands: " << endl;
-    for (const string& command : command_list) {
-        cout << command << endl;
-    }
-*/
 
 /*else if(input == "out"){
             cout << "Enter output name: ";
