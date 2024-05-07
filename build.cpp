@@ -3,21 +3,19 @@
 #include <vector>
 #include <string>
 
-using namespace std;
-
 void clear(){
     #ifdef _WIN32
-        system("cls");
+        std::system("cls");
     #elif __unix__
-        system("clear");
+        std::system("clear");
     #else 
-        system("clear");
+        std::system("clear");
     #endif
 }
 
 void display_help(){
     clear();
-    cout << R"(
+    std::cout << R"(
             ###############################
             # exit <=> exit               #
             # help <=> help               #
@@ -32,68 +30,72 @@ void display_help(){
             # start <=> start program     #
             #                             #
             ###############################
-            )" << endl;
+            )" << std::endl;
 }
-void read_config(vector<string>& command_list, bool& start_after_compile) {
-    ifstream config("commands.sh");
-    string command;
+
+void read_config(std::vector<std::string>& command_list, bool& start_after_compile) {
+    std::ifstream config("commands.sh");
+    std::string command;
     if(!config){
-        cout << "Error no config file found!" << endl;
-        cout << "Fallback to alternative config! " << endl;
+        std::cout << "Error no config file found!" << std::endl;
+        std::cout << "Fallback to alternative config! " << std::endl;
         command_list.push_back("nothing");
     }
-    while (getline(config, command)) {
+    while (std::getline(config, command)) {
         if(command != ""){
-            cout << command << endl;
+            std::cout << command << std::endl;
             command_list.push_back(command);
         }
     }
     config.close(); 
 }
 
-//voids for the compelation
-void make_compile_command(string& name, string& output, string& extras, string& compiler, string& compile_command){
+//voids for the compilation
+void make_compile_command(std::string& name, std::string& output, std::string& extras, std::string& compiler, std::string& compile_command){
     //bundle the local infos into one string for execution
     compile_command = compiler + "  " + name + " -o " + output + " " + extras;
-    cout << compile_command << endl;
+    std::cout << compile_command << std::endl;
 }
-//safety check + running the command 
-void run_compile_command(string& compile_command){
-    if(compile_command[0] == 'g' || compile_command[0] == 'G') {
-        system(compile_command.c_str());
-    }else {
-        cout << "Invalid compiler specified!" << endl;
-        cout << "Please use 'g++' or 'gcc'." << endl;
-    }
-}
-void run_command(const string& command){
-    if(command[0] == 'g' || command[0] == 'G'){
-        system(command.c_str());
-    }else{
-        cout << "Invalid compiler specified!" << endl;
-        cout << "Please use 'g++' or 'gcc'." << endl;
-    }
-}
-int main() {
-    vector<string> command_list;
-    string input;
-    string __version__ = "0.00.04";
 
-    string name;
-    string output;
-    string extras;
-    string compiler = "g++ ";
-    string compile_command;
-    string start_command;
+//safety check + running the command 
+void run_compile_command(std::string& compile_command){
+    if(compile_command[0] == 'g' || compile_command[0] == 'G') {
+        std::system(compile_command.c_str());
+    }else {
+        std::cout << "Invalid compiler specified!" << std::endl;
+        std::cout << "Please use 'g++' or 'gcc'." << std::endl;
+    }
+}
+
+void run_command(const std::string& command){
+    if(command[0] == 'g' || command[0] == 'G'){
+        std::system(command.c_str());
+    }else{
+        std::cout << "Invalid compiler specified!" << std::endl;
+        std::cout << "Please use 'g++' or 'gcc'." << std::endl;
+    }
+}
+
+int main() {
+    std::vector<std::string> command_list;
+    std::string input;
+    std::string __version__ = "0.00.05";
+
+    std::string name;
+    std::string output;
+    std::string extras;
+    std::string compiler = "g++ ";
+    std::string compile_command;
+    std::string start_command;
     bool start_after_compile = false;
 
     //clean display to start
     clear();
-    cout << "app build: " << __version__ << endl;
+    std::cout << "app build: " << __version__ << std::endl;
     //read build commands in vector
     read_config(command_list, start_after_compile);
     //check if config uses g++ or gcc
-    for (const string& command : command_list) {
+    for (const std::string& command : command_list) {
         if (command != "nothing"){
             if(command[3] == 'c'){
                 compiler = "gcc";
@@ -103,49 +105,48 @@ int main() {
         }
     }
     
-
     //start shell
-    cout << "type --help for help" << endl;
+    std::cout << "type --help for help" << std::endl;
     while(true){
         //print tty environment
-        cout << "|>: ";
-        getline(cin, input);
+        std::cout << "|>: ";
+        std::getline(std::cin, input);
         
         if(input == "exit"){
-            exit(0);
+            return 0;
         }else if(input == "--help"){
             display_help();
         }else if(input == "clear"){
             clear();
         }else if(input == "shpkg"){
-            for (const string& command : command_list) {
+            for (const std::string& command : command_list) {
                 if(command == "nothing"){
-                    cout << "Error!" << endl;
-                    cout << "No compile command or config found!" << endl;
+                    std::cout << "Error!" << std::endl;
+                    std::cout << "No compile command or config found!" << std::endl;
 
                     if(name != "" || output != ""){
-                        cout << "-----------------------------------" << endl;
-                        cout << "Local configuration;" << endl;
-                        cout << name << endl;
-                        cout << output << endl;
-                        cout << extras << endl;
+                        std::cout << "-----------------------------------" << std::endl;
+                        std::cout << "Local configuration;" << std::endl;
+                        std::cout << name << std::endl;
+                        std::cout << output << std::endl;
+                        std::cout << extras << std::endl;
                     }
                 }else{
-                    cout << command << endl;
+                    std::cout << command << std::endl;
                 }
             }
-            cin.ignore();   
+            std::cin.ignore();   
         }else if(input == "makepkg"){
-            for (const string& command : command_list) {
+            for (const std::string& command : command_list) {
                 if(command == "nothing"){
-                    cout << "Error!" << endl;
-                    cout << "No compile command or config found!" << endl;
-                    cout << "Fallback to local configuration?: |[Y|N]|";
-                    cin >> input;
+                    std::cout << "Error!" << std::endl;
+                    std::cout << "No compile command or config found!" << std::endl;
+                    std::cout << "Fallback to local configuration?: |[Y|N]|";
+                    std::cin >> input;
                     if(input == "Y" || input == "y"){
                         if(name == "" || output == ""){
-                            cout << "Error missing or invalid arguments!" << endl;
-                            cout << "Pleas enter compile infos!" << endl;
+                            std::cout << "Error missing or invalid arguments!" << std::endl;
+                            std::cout << "Pleas enter compile infos!" << std::endl;
                         }else{
                             make_compile_command(name, extras, output, compile_command, compiler);
                             run_compile_command(compile_command);
@@ -153,9 +154,9 @@ int main() {
                     }
                 }else {
                     if(name != "" || output != ""){
-                        cout << "Found local config!" << endl;
-                        cout << "juse it?: |[Y|N]| ";
-                        cin >> input;
+                        std::cout << "Found local config!" << std::endl;
+                        std::cout << "juse it?: |[Y|N]| ";
+                        std::cin >> input;
                         if(input == "y" || input == "Y"){
                             make_compile_command(name, extras, output, compile_command, compiler);
                             run_compile_command(compile_command);
@@ -167,74 +168,65 @@ int main() {
                     run_command(command);
                 }
             }
-            cin.ignore();
+            std::cin.ignore();
         }else if(input == "name"){
-            cout << "Enter name of your file: ";
-            cin >> name;
-            cout << name << endl;
-            cin.ignore();
+            std::cout << "Enter name of your file: ";
+            std::cin >> name;
+            std::cout << name << std::endl;
+            std::cin.ignore();
         }else if(input == "out"){
-            cout << "Enter output name: ";
-            cin >> output;
-            cout << output << endl;
-            cin.ignore();
+            std::cout << "Enter output name: ";
+            std::cin >> output;
+            std::cout << output << std::endl;
+            std::cin.ignore();
         }else if(input == "extra"){
-            cout << "Add compile extras: ";
-            cin >> extras;
-            cin.ignore();
+            std::cout << "Add compile extras: ";
+            std::cin >> extras;
+            std::cin.ignore();
         }else if(input == "compile"){
-            cout << "g++ or gcc: ";
-            cin >> compiler;
+            std::cout << "g++ or gcc: ";
+            std::cin >> compiler;
 	    if(compiler == "g++" || compiler == "gcc"){
-		    cout << "set compiler successfull!" << endl;
+		    std::cout << "set compiler successfull!" << std::endl;
 	    }else {
-		    cout << "Error! " << endl;
-		    cout << "Pleas enter a valid compiler!" << endl;
-		    cout << "Fallback to g++!" << endl;
+		    std::cout << "Error! " << std::endl;
+		    std::cout << "Pleas enter a valid compiler!" << std::endl;
+		    std::cout << "Fallback to g++!" << std::endl;
 		    compiler = "g++";
 	    }
-            cin.ignore();
+            std::cin.ignore();
         }else if(input == "save"){
             if(name != "" && output != ""){
                 make_compile_command(name, extras, output, compile_command, compiler);
                 if(compile_command[0] == 'g' || compile_command[0] == 'G') {
-                    ofstream write_new_config("commands.sh", ios::out);
-                    write_new_config << compile_command << endl;
+                    std::ofstream write_new_config("commands.sh", std::ios::out);
+                    write_new_config << compile_command << std::endl;
                     write_new_config.close();            
                 } else {
-                    cout << "Invalid compiler specified!" << endl;
-                    cout << "Please use 'g++' or 'gcc'." << endl;
+                    std::cout << "Invalid compiler specified!" << std::endl;
+                    std::cout << "Please use 'g++' or 'gcc'." << std::endl;
                 }
                 
             }else{
-                cout << "Error!" << endl;
-                cout << "Before save enter compile infos like name, out" << endl;
-                cin.ignore();
+                std::cout << "Error!" << std::endl;
+                std::cout << "Before save enter compile infos like name, out" << std::endl;
+                std::cin.ignore();
             }
         }else if(input == "d"){
-            for (const string& command : command_list) {
-                cout << command << endl;
+            for (const std::string& command : command_list) {
+                std::cout << command << std::endl;
             }
         }else if(input == "start"){
-                    cout << "Pleas enter program name: ";
-                    cin >> name;
+                    std::cout << "Pleas enter program name: ";
+                    std::cin >> name;
                     #ifdef _WIN32
                     start_command = ".\\" + name;
-                    cout << start_command << endl;
-                    system(start_command.c_str());
+                    std::cout << start_command << std::endl;
+                    std::system(start_command.c_str());
                     #else
                     start_command = "./" + name;
-                    system(start_command.c_str());
+                    std::system(start_command.c_str());
                     #endif
         }
     }
 }
-
-
-/*else if(input == "out"){
-            cout << "Enter output name: ";
-            cin >> output;
-            cin.ignore();
-        }
-            the cin.ignore(); is to clear the input buffer to prevent a bug where it displays |>: |>: 
-*/
