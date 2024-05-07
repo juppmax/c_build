@@ -51,6 +51,29 @@ void read_config(vector<string>& command_list, bool& start_after_compile) {
     config.close(); 
 }
 
+//voids for the compelation
+void make_compile_command(string& name, string& output, string& extras, string& compiler, string& compile_command){
+    //bundle the local infos into one string for execution
+    compile_command = compiler + "  " + name + " -o " + output + " " + extras;
+    cout << compile_command << endl;
+}
+//safety check + running the command 
+void run_compile_command(string& compile_command){
+    if(compile_command[0] == 'g' || compile_command[0] == 'G') {
+        system(compile_command.c_str());
+    }else {
+        cout << "Invalid compiler specified!" << endl;
+        cout << "Please use 'g++' or 'gcc'." << endl;
+    }
+}
+void run_command(auto& command){
+    if(command[0] == 'g' || command[0] == 'G'){
+        system(command.c_str());
+    }else{
+        cout << "Invalid compiler specified!" << endl;
+        cout << "Please use 'g++' or 'gcc'." << endl;
+    }
+}
 int main() {
     vector<string> command_list;
     bool __runtime__ = false;
@@ -133,14 +156,8 @@ int main() {
                             cout << "Error missing or invalid arguments!" << endl;
                             cout << "Pleas enter compile infos!" << endl;
                         }else{
-                            compile_command = compiler + "  " + name + " -o " + output + " " + extras;
-                            cout << compile_command << endl;
-                            if(compile_command[0] == 'g' || compile_command[0] == 'G') {
-                                system(compile_command.c_str());
-                            } else {
-                                cout << "Invalid compiler specified!" << endl;
-                                cout << "Please use 'g++' or 'gcc'." << endl;
-                            }
+                            make_compile_command(name, extras, output, compile_command, compiler);
+                            run_compile_command(compile_command);
                         }
                     }
                 }else {
@@ -149,30 +166,14 @@ int main() {
                         cout << "juse it?: |[Y|N]| ";
                         cin >> input;
                         if(input == "y" || input == "Y"){
-                            compile_command = compiler + "  " + name + " -o " + output + " " + extras;
-                            cout << compile_command << endl;
-                            if(compile_command[0] == 'g' || compile_command[0] == 'G') {
-                                system(compile_command.c_str());
-                            } else {
-                                cout << "Invalid compiler specified!" << endl;
-                                cout << "Please use 'g++' or 'gcc'." << endl;
-                            }
+                            make_compile_command(name, extras, output, compile_command, compiler);
+                            run_compile_command(compile_command);
                         }else{
-                            if(command[0] == 'g' || command[0] == 'G'){
-                            	system(command.c_str());
-                            }else{
-                                cout << "Invalid compiler specified!" << endl;
-                                cout << "Please use 'g++' or 'gcc'." << endl;
-                            }
+                            run_command(command);
                         }
 
                     }
-                    if(command[0] == 'g' || command[0] == 'G'){
-                        system(command.c_str());
-                    }else{
-                        cout << "Invalid compiler specified!" << endl;
-                        cout << "Please use 'g++' or 'gcc'." << endl;
-                    }
+                    run_command(command);
                 }
             }
             cin.ignore();
@@ -193,18 +194,18 @@ int main() {
         }else if(input == "compile"){
             cout << "g++ or gcc: ";
             cin >> compiler;
-	if(compiler == "g++" || compiler == "gcc"){
-		cout << "set compiler successfull!" << endl;
-	}else {
-		cout << "Error! " << endl;
-		cout << "Pleas enter a valid compiler!" << endl;
-		cout << "Fallback to g++!" << endl;
-		compiler = "g++";
-	}
+	    if(compiler == "g++" || compiler == "gcc"){
+		    cout << "set compiler successfull!" << endl;
+	    }else {
+		    cout << "Error! " << endl;
+		    cout << "Pleas enter a valid compiler!" << endl;
+		    cout << "Fallback to g++!" << endl;
+		    compiler = "g++";
+	    }
             cin.ignore();
         }else if(input == "save"){
             if(name != "" && output != ""){
-                compile_command = compiler + "  " + name + " -o " + output + " " + extras;
+                make_compile_command(name, extras, output, compile_command, compiler);
                 if(compile_command[0] == 'g' || compile_command[0] == 'G') {
                     ofstream write_new_config("commands.sh", ios::out);
                     write_new_config << compile_command << endl;
