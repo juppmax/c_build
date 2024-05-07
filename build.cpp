@@ -193,13 +193,13 @@ int main() {
         }else if(input == "compile"){
             cout << "g++ or gcc: ";
             cin >> compiler;
-	if(compiler == “g++” || compiler == “gcc”){
-		cout << “set compiler successfull!” << endl;
+	if(compiler == "g++" || compiler == "gcc"){
+		cout << "set compiler successfull!" << endl;
 	}else {
-		cout << “Error! ” << endl;
-		cout << “Pleas enter a valid compiler! ” << endl;
-		cout << “Fallback to g++!” << endl;
-		compiler = “g++”;
+		cout << "Error! " << endl;
+		cout << "Pleas enter a valid compiler!" << endl;
+		cout << "Fallback to g++!" << endl;
+		compiler = "g++";
 	}
             cin.ignore();
         }else if(input == "save"){
