@@ -19,20 +19,20 @@ void display_help(){
     clear();
     cout << R"(
             ###############################
-            # exit <=> exit                                   #
-            # help <=> help                                 #
-            # shpkg <=> show config                  #
-            # makepkg <=> build app                 #
-            # clear <=> clear display                   #
-            # name <=> enter file                       #
-            # out <=> enter output                    #
-            # extra <=> add extras                     #
-            # compile <=> use gcc/g++              #
-            # save <=> save local config            #
-            # start <=> start program                #
-            #                                                       #
-            ##############################
-            )" << endl;k
+            # exit <=> exit               #
+            # help <=> help               #
+            # shpkg <=> show config       #
+            # makepkg <=> build app       #
+            # clear <=> clear display     #
+            # name <=> enter file         #
+            # out <=> enter output        #
+            # extra <=> add extras        #
+            # compile <=> use gcc/g++     #
+            # save <=> save local config  #
+            # start <=> start program     #
+            #                             #
+            ###############################
+            )" << endl;
 }
 void read_config(vector<string>& command_list, bool& start_after_compile) {
     ifstream config("commands.sh");
