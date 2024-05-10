@@ -2,7 +2,8 @@
 #include <fstream>
 #include <vector>
 #include <string>
-
+#include <thread>
+#include <chrono>
 void clear(){
     #ifdef _WIN32
         std::system("cls");
@@ -51,9 +52,26 @@ void read_config(std::vector<std::string>& command_list) {
     }
     config.close(); 
 }
+void read_config_silent(std::vector<std::string>& command_list) {
+    std::ifstream config("commands.sh");
+    std::string command;
+    if(!config){
+        command_list.push_back("nothing");
+    }
+    while (std::getline(config, command)) {
+        if(command != ""){
+            command_list.push_back(command);
+        }
+    }
+    config.close(); 
+}
 void draw_update(std::vector<std::string>& command_list){
     command_list.clear();
     read_config(command_list);
+}
+void draw_silent_update (std::vector<std::string>& command_list){
+    command_list.clear();
+    read_config_silent(command_list);
 }
 void draw_compiler(std::string& compiler, bool& gpp){
     std::cout << "g++ or gcc: ";
@@ -119,7 +137,7 @@ void show_local_config(std::string& name, std::string& output, std::string& extr
 
 //the draw functions are the commands
 void draw_shpkg(std::string& name, std::string& output, std::string& extras, std::vector<std::string>& command_list){
-    //read the vector
+    //read the vector;
     for (const std::string& command : command_list) {
         if(command == "nothing"){
             std::cout << "Error!" << std::endl;
@@ -139,14 +157,7 @@ void draw_makepkg(std::string& input, std::string& name, std::string& output,std
         run_command(command);
     }
 }
-void draw_makepkg_loc(std::string& input, std::string& name, std::string& output,std::string& extras,std::string& compile_command, std::string& compiler, std::vector<std::string>& command_list, bool& gpp){
-    if(name != "" && output != ""){
-            make_compile_command(name, extras, output, compile_command, compiler, gpp);
-            run_compile_command(compile_command);
-    }else{
-        std::cout << "Pleas fill out all build options (name, output)" << std::endl;
-    }
-}
+
 void draw_name(std::string& name){
     std::cout << "Enter name of your file: ";
     std::cin >> name;
@@ -196,6 +207,7 @@ void draw_start(){
     std::system(start_command.c_str());
     #endif
 }
+
 void commands(std::string& input, std::string& name, std::string& output,std::string& extras,std::string& compile_command, std::string& compiler, std::vector<std::string>& command_list, bool& gpp){
     if(input == "exit"){
         exit();
@@ -208,7 +220,9 @@ void commands(std::string& input, std::string& name, std::string& output,std::st
     }else if(input == "makepkg"){
         draw_makepkg(input, name, output, extras, compile_command, compiler, command_list);
     }else if(input == "makepkg -loc"){
-        draw_makepkg_loc(input, name, output, extras, compile_command, compiler, command_list, gpp);
+        //had to put that here otherwise it would not work
+        make_compile_command(name, output, extras, compiler, compile_command, gpp);
+        run_compile_command(compile_command);
     }else if(input == "name"){
         draw_name(name);
     }else if(input == "out"){
@@ -252,6 +266,7 @@ void start_app(std::string& __version__, std::string compiler, std::vector<std::
 }
 //managing the tty
 void start_tyy(std::string& input, std::string& name, std::string output,std::string& extras,std::string compile_command, std::string& compiler, std::vector<std::string> command_list, bool& gpp){
+    draw_silent_update(command_list);
     while(true){
         std::cout << "|>: ";
         std::getline(std::cin, input);
@@ -263,6 +278,7 @@ int main() {
     std::vector<std::string> command_list;
     std::string input;
     std::string __version__ = "0.00.05";
+    
 
     std::string name;
     std::string output;
