@@ -211,7 +211,7 @@ void draw_start(){
 void commands(std::string& input, std::string& name, std::string& output,std::string& extras,std::string& compile_command, std::string& compiler, std::vector<std::string>& command_list, bool& gpp){
     if(input == "exit"){
         exit();
-    }else if(input == "--help"){
+    }else if(input == "help"){
         display_help();
     }else if(input == "clear"){
         clear();
