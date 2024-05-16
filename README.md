@@ -5,7 +5,7 @@ You just build it with:
 It has the following commands:
 
 exit <=> exit                        
-help <=> help                        
+--help <=> help                        
 shpkg <=> show config              
 makepkg <=> build app                
 makepkg -loc <=> make with local conf
