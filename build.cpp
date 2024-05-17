@@ -4,6 +4,7 @@
 #include <string>
 #include <thread>
 #include <chrono>
+
 void clear(){
     #ifdef _WIN32
         std::system("cls");
@@ -33,7 +34,9 @@ void display_help(){
             # update <=> refresh the app           #
             #                                      #
             # !     Wont work with mingw         ! #
-            # !                                  ! #
+            # !     because of java              ! #
+            # !     only c/c++ will work         ! #
+            # !     with mingw                   ! #
             #                                      #
             ########################################
             )" << std::endl;
