@@ -293,7 +293,7 @@ int main() {
 
     std::string name;
     std::string output;
-    std::string extras;
+    std::string extras = " -static";
     std::string compiler = "g++";
     std::string compile_command;
 
